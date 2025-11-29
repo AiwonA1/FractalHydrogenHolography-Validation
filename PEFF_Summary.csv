@@ -1,0 +1,38 @@
+### Experiment Summary: Petrosian Fractal Dimension Analysis
+
+The previous step successfully computed the Petrosian Fractal Dimension (PFD) for seismic magnitude data from USGS and EEG channel data from a PhysioNet sample. Below is a summary of the calculated PFD values.
+
+# Load the generated summary CSV file
+df_results = pd.read_csv('logs_peff/peff_summary.csv')
+
+print("Summary of Petrosian Fractal Dimension (PFD) values:")
+display(df_results.head())
+
+The table above shows the Petrosian Fractal Dimension (PFD) for the seismic data and the first few EEG channels. To better visualize the distribution, especially for the EEG data, let's plot these values.
+
+plt.figure(figsize=(14, 6))
+plt.bar(df_results['dataset'][:10], df_results['PFD'][:10], color='skyblue') # Plot first 10 for readability
+plt.xlabel('Dataset / EEG Channel')
+plt.ylabel('Petrosian Fractal Dimension (PFD)')
+plt.title('Petrosian Fractal Dimension for Seismic Data and EEG Channels (First 10)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+print(f"\nMean PFD for all EEG channels: {df_results[df_results['dataset'] != 'seismic']['PFD'].mean():.3f}")
+print(f"Min PFD for EEG channels: {df_results[df_results['dataset'] != 'seismic']['PFD'].min():.3f}")
+print(f"Max PFD for EEG channels: {df_results[df_results['dataset'] != 'seismic']['PFD'].max():.3f}")
+
+### Report with Findings
+
+**1. Seismic Data:**
+- The seismic magnitude data yielded a PFD of approximately 1.026. This value indicates a certain level of irregularity and complexity in the earthquake magnitude time series. Geological processes often exhibit fractal characteristics, and this PFD quantifies that aspect.
+
+**2. EEG Data:**
+- The EEG data, processed channel by channel, showed PFD values generally clustered around 1.020. The mean PFD for all EEG channels was 1.020, with a minimum of 1.018 and a maximum of 1.023. This suggests that brain electrical activity, as measured by EEG, also exhibits fractal properties, indicative of complex, non-linear dynamics. The relatively narrow range of PFD values across different channels might suggest a consistent level of complexity in the recorded brain activity under the specific experimental conditions.
+
+**3. Comparison:**
+- The PFD values for both seismic and EEG data are in a similar range, highlighting that complex systems from different domains can share similar fractal characteristics. The seismic data showed slightly higher PFD values, suggesting potentially greater irregularity compared to the average EEG channel in this specific analysis.
+
+All plots generated during the experiment are saved in the `plots_peff/` directory, and the detailed PFD logs are available in `logs_peff/peff_summary.json` and `logs_peff/peff_summary.csv`.
