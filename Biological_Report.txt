@@ -2,8 +2,8 @@
 
 **Title:** Empirical Validation of the HHF Framework Using Cognitive/Biological Proxy Data — Daily Temperature Time-Series
 
-**Authors:** [Your Name / Team]
-**Date:** [Current Date]
+**Authors:** FractiAI Reserarch Team
+**Date:** November 29, 2025
 
 ---
 
