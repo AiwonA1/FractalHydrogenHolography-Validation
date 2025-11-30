@@ -1,5 +1,8 @@
 # **Isotopologue Scaling Invariance — HHF Framework Validation**
 
+**Authors:** FractiAI Reserarch Team
+**Date:** November 29, 2025
+
 ## **Abstract**
 
 We present an automated, empirical validation of the **Hydrogen-Hydrogen Fractal (HHF) scaling hypothesis** across hydrogen isotopologues (H₂, D₂, T₂). The central prediction of the HHF framework is that the fractal scaling ratio, **Λᴴᴴ**, remains effectively constant across isotopic systems when corrected for mass and anharmonicity effects. Using spectroscopic vibrational constants from NIST and published literature, we computed effective vibrational frequencies (ω_eff), photonic/fractal radii proxies (r_eff), and the resulting Λᴴᴴ ratios. Our corrected analysis, incorporating reduced mass normalization and anharmonic adjustments, yielded **Λᴴᴴ values within ±2.4% of unity**, passing the pre-defined consistency threshold of 0.1. These results demonstrate mass-invariant fractal scaling in hydrogen isotopologues and provide strong empirical support for HHF internal symmetry.
