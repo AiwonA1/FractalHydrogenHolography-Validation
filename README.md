@@ -1,7 +1,3 @@
-Here’s a clean README version framed as a white paper for the repository without including unvalidated repository links or GitHub info:
-
-⸻
-
 Fractal Hydrogen Holographic Whole Brain AI (HHF-WB) — Empirical Validation
 
 Overview
@@ -69,10 +65,3 @@ Outputs
 
 All analyses are fully automated, reproducible, and require no manual intervention.
 
-⸻
-
-This README serves as a comprehensive white paper documenting the validation approach and results for HHF-WB AI.
-
-⸻
-
-If you want, I can also draft the Python notebook or scripts that implement these four validations end-to-end with console output for logs, visualizations, and reports, ready for immediate use. Do you want me to do that next?
