@@ -1,29 +1,31 @@
+Loading Daily Minimum Temperatures dataset...
+
+Processed Daily_Minimum_Temperatures_Melbourne: PFD=1.024, HFD=0.872
+Simulating microtubule oscillation dataset...
+
+Processed Simulated_Microtubule_Oscillations: PFD=1.019, HFD=0.135
+
 --- Fractal Analysis Summary ---
-                             dataset  n_points      PFD      HFD
-Daily_Minimum_Temperatures_Melbourne      3650 1.024332 1.871524
+dataset	n_points	PFD	HFD
+0	Daily_Minimum_Temperatures_Melbourne	3650	1.024332	0.87158
+1	Simulated_Microtubule_Oscillations	2000	1.018874	0.13490
+
+
+
 
 --- Fractal Analysis Log (JSON) ---
 {
   "Daily_Minimum_Temperatures_Melbourne": {
     "n_points": 3650,
     "PFD": 1.024332464786391,
-    "HFD": 1.8715242628219133
+    "HFD": 0.8715798768754707
+  },
+  "Simulated_Microtubule_Oscillations": {
+    "n_points": 2000,
+    "PFD": 1.0188744014438644,
+    "HFD": 0.1348995119321985
   }
 }
 
-
-Cognitive / Biological Proxy Validation — HHF Framework
-
-Abstract:
-Automated fractal analysis of real-world or simulated biological proxy time-series data was performed
-to validate HHF predictions of phase-locked hydrogen-related coherence.
-
-Dataset: Daily_Minimum_Temperatures_Melbourne
-Number of points: 3650
-Petrosian Fractal Dimension (PFD): 1.024
-Higuchi Fractal Dimension (HFD): 1.872
-
-Findings:
-The fractal dimensions indicate inherent complexity in the signal, consistent with expected HHF dynamics.
-This automated pipeline demonstrates the feasibility of testing HHF principles
-in cognitive/biological proxy datasets without manual intervention.
+HHF Cognitive / Biological Proxy Validation Complete.
+All plots, logs, and report are displayed in the console.
