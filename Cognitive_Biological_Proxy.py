@@ -1,120 +1,122 @@
-# ======================================================
-# HHF Cognitive / Biological Proxy Validation Pipeline
-# Includes microtubule oscillation simulation component
-# ======================================================
+# HHF Cognitive / Biological Proxy Validation — Real Data Only (Console Output)
+# ===========================================================================
 
-import os, json, numpy as np, pandas as pd, matplotlib.pyplot as plt
+import os
+import json
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from urllib.request import urlopen
+from io import StringIO
 
 # -------------------------
-# Fractal Measures
+# Fractal Dimension Functions
 # -------------------------
 def petrosian_fd(sig):
-    """Petrosian Fractal Dimension"""
     sig = np.array(sig, dtype=float)
     N = len(sig)
-    if N < 3: return np.nan
+    if N < 3:
+        return np.nan
     diff = np.diff(sig)
-    sign_changes = np.sum(diff[:-1]*diff[1:] < 0)
-    if sign_changes <= 0: return np.nan
-    return np.log10(N)/(np.log10(N) + np.log10(N/(N+0.4*sign_changes)))
+    sign_changes = np.sum(diff[:-1] * diff[1:] < 0)
+    if sign_changes <= 0:
+        return np.nan
+    return np.log10(N) / (np.log10(N) + np.log10(N / (N + 0.4 * sign_changes)))
 
-def higuchi_fd(sig, kmax=10):
-    """Higuchi Fractal Dimension"""
+def higuchi_fd(sig, k_max=10):
     L = []
     N = len(sig)
-    for k in range(1, kmax+1):
+    for k in range(1, k_max + 1):
         Lk = []
         for m in range(k):
-            Lm = 0
-            for i in range(1, int(np.floor((N-m)/k))):
-                Lm += abs(sig[m+i*k] - sig[m+(i-1)*k])
-            Lm = Lm*(N-1)/(np.floor((N-m)/k)*k)
-            Lk.append(Lm)
+            Lmk = 0
+            for i in range(1, int(np.floor((N - m) / k))):
+                Lmk += abs(sig[m + i*k] - sig[m + (i-1)*k])
+            Lmk = (Lmk * (N - 1) / (np.floor((N - m)/k) * k)) if Lmk != 0 else 0
+            Lk.append(Lmk)
         L.append(np.mean(Lk))
-    lnL = np.log(L)
-    lnk = np.log(1./np.arange(1, kmax+1))
-    return np.polyfit(lnk, lnL, 1)[0]
+    L = np.array(L)
+    lnL = np.log(L[L>0])
+    lnk = np.log(np.arange(1, len(L)+1))[L>0]
+    if len(lnL) < 2:
+        return np.nan
+    return np.polyfit(lnk, lnL, 1)[0] * -1
 
 # -------------------------
-# Directories
+# Output Directories
 # -------------------------
-os.makedirs("plots_hhf", exist_ok=True)
-os.makedirs("logs_hhf", exist_ok=True)
+os.makedirs("plots_HHF", exist_ok=True)
+os.makedirs("logs_HHF", exist_ok=True)
+
+# -------------------------
+# Real Datasets
+# -------------------------
+datasets_list = [
+    {
+        "name": "Daily_Minimum_Temperatures_Melbourne",
+        "url": "https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv",
+        "column": "Temp"
+    },
+    {
+        "name": "InVitro_Microtubule_Oscillations",
+        # Replace with real public microtubule dataset URL
+        "url": "https://raw.githubusercontent.com/YourRepo/Microtubule_Oscillations.csv",
+        "column": "Oscillation"
+    }
+]
 
 results, log = [], {}
 
 # -------------------------
-# 1. Cognitive/Biological Proxy Dataset
-# Example: Daily Minimum Temperatures Melbourne
+# Process Datasets
 # -------------------------
-print("Loading Daily Minimum Temperatures dataset...")
-try:
-    url_temp = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv"
-    df_temp = pd.read_csv(url_temp)
-    sig_temp = df_temp['Temp'].values
-    pfd_temp = petrosian_fd(sig_temp)
-    hfd_temp = higuchi_fd(sig_temp)
+for ds in datasets_list:
+    try:
+        print(f"\nLoading {ds['name']} dataset...")
+        response = urlopen(ds['url'])
+        csv_data = response.read().decode('utf-8')
+        df = pd.read_csv(StringIO(csv_data))
+        sig = df[ds['column']].values
+        
+        # Fractal measures
+        pfd = petrosian_fd(sig)
+        hfd = higuchi_fd(sig)
+        
+        # Log and results
+        log[ds['name']] = {"n_points": len(sig), "PFD": pfd, "HFD": hfd}
+        results.append({"dataset": ds['name'], "n_points": len(sig), "PFD": pfd, "HFD": hfd})
+        
+        # Plot
+        plt.figure(figsize=(12,4))
+        plt.plot(sig)
+        plt.title(f"{ds['name']} — PFD {pfd:.3f}, HFD {hfd:.3f}")
+        plt.xlabel("Index")
+        plt.ylabel("Signal")
+        plt.tight_layout()
+        plt.show()
+        
+        print(f"Processed {ds['name']}: PFD={pfd:.3f}, HFD={hfd:.3f}")
     
-    plt.figure(figsize=(12,4))
-    plt.plot(sig_temp)
-    plt.title(f"Daily Minimum Temperatures (Melbourne) — PFD={pfd_temp:.3f}, HFD={hfd_temp:.3f}")
-    plt.tight_layout()
-    plt.savefig("plots_hhf/Melbourne_Temperatures.png")
-    plt.close()
-    
-    results.append({"dataset":"Daily_Minimum_Temperatures_Melbourne",
-                    "n_points":len(sig_temp),
-                    "PFD":pfd_temp,
-                    "HFD":hfd_temp})
-    log["Daily_Minimum_Temperatures_Melbourne"] = {"n_points":len(sig_temp),"PFD":pfd_temp,"HFD":hfd_temp}
-    print(f"Processed Daily_Minimum_Temperatures_Melbourne: PFD={pfd_temp:.3f}, HFD={hfd_temp:.3f}")
-except Exception as e:
-    print("Error processing temperature dataset:", e)
+    except Exception as e:
+        log[ds['name']] = {"error": str(e)}
+        print(f"Error processing {ds['name']}: {e}")
 
 # -------------------------
-# 2. Microtubule Oscillation Simulation
-# -------------------------
-print("Simulating microtubule oscillation dataset...")
-try:
-    np.random.seed(42)
-    t = np.linspace(0, 100, 2000) # time vector
-    # Simulate microtubule oscillation: damped sine wave + noise
-    f0, decay = 0.5, 0.01
-    sig_mt = np.sin(2*np.pi*f0*t) * np.exp(-decay*t) + 0.05*np.random.randn(len(t))
-    
-    pfd_mt = petrosian_fd(sig_mt)
-    hfd_mt = higuchi_fd(sig_mt)
-    
-    plt.figure(figsize=(12,4))
-    plt.plot(t, sig_mt)
-    plt.title(f"Simulated Microtubule Oscillations — PFD={pfd_mt:.3f}, HFD={hfd_mt:.3f}")
-    plt.tight_layout()
-    plt.savefig("plots_hhf/Microtubule_Oscillations.png")
-    plt.close()
-    
-    results.append({"dataset":"Simulated_Microtubule_Oscillations",
-                    "n_points":len(sig_mt),
-                    "PFD":pfd_mt,
-                    "HFD":hfd_mt})
-    log["Simulated_Microtubule_Oscillations"] = {"n_points":len(sig_mt),"PFD":pfd_mt,"HFD":hfd_mt}
-    print(f"Processed Simulated_Microtubule_Oscillations: PFD={pfd_mt:.3f}, HFD={hfd_mt:.3f}")
-except Exception as e:
-    print("Error processing microtubule dataset:", e)
-
-# -------------------------
-# 3. Save Logs and Summary
+# Display Summary in Console
 # -------------------------
 df_summary = pd.DataFrame(results)
-df_summary.to_csv("logs_hhf/fractal_summary.csv", index=False)
-
-with open("logs_hhf/fractal_log.json","w") as f:
-    json.dump(log, f, indent=2)
-
 print("\n--- Fractal Analysis Summary ---")
-print(df_summary)
+print(df_summary.to_string(index=False))
 
 print("\n--- Fractal Analysis Log (JSON) ---")
 print(json.dumps(log, indent=2))
 
+# -------------------------
+# Save Files
+# -------------------------
+df_summary.to_csv("logs_HHF/fractal_summary.csv", index=False)
+with open("logs_HHF/fractal_summary.json", "w") as f:
+    json.dump(log, f, indent=2)
+
 print("\nHHF Cognitive / Biological Proxy Validation Complete.")
-print("All plots saved in plots_hhf/, logs saved in logs_hhf/")
+print("All outputs (logs, plots, summary) displayed in console.")
