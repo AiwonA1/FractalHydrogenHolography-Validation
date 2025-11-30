@@ -1,0 +1,20 @@
+Loading Daily Minimum Temperatures (Melbourne) dataset...
+
+
+Processed Daily_Minimum_Temperatures_Melbourne: PFD=1.024, HFD=0.871
+
+--- Fractal Analysis Summary ---
+                                dataset  n_points       PFD       HFD
+0  Daily_Minimum_Temperatures_Melbourne      3650  1.024332  0.871035
+
+--- Fractal Analysis Log (JSON) ---
+{
+  "Daily_Minimum_Temperatures_Melbourne": {
+    "n_points": 3650,
+    "PFD": 1.024332464786391,
+    "HFD": 0.8710348624219384
+  }
+}
+
+HHF Cognitive / Biological Proxy Validation — Daily Temperature Time-Series Complete.
+All outputs (logs, plots, summary) displayed in console.
