@@ -1,0 +1,2 @@
+dataset_name,n_points,pfd,hfd,mean_temp,std_temp,min_temp,max_temp,timestamp,data_source,k_max
+Daily_Minimum_Temperatures_Melbourne,3650,1.024332464786391,0.8710348624219364,11.177753424657535,4.071279075310806,0.0,26.3,2025-12-01T12:25:01.583440,https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv,10

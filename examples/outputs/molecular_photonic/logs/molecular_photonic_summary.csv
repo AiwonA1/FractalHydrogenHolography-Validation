@@ -1,0 +1,7 @@
+Quantity,Symbol,HHF Paper Value,Calculated Value,Source
+HHF Radius,R_HHF,≈ 1.81 × 10⁻¹³ m,1.81081e-13 m,HHF Formula (Theory)
+Scaling Ratio,R_HHF/L_P,≈ 1.12 × 10²²,1.120372216837e+22,HHF Formula (Theory)
+Area Ratio,S_H,≈ 1.26 × 10⁴⁴,1.255233904259e+44,Calculated (R_ratio)²
+Volume Ratio,V_H,≈ 1.41 × 10⁶⁶,1.406329191963e+66,Calculated (R_ratio)³
+Holographic Constant,Λᴴᴴ,≈ 1.12 × 10²²,1.120372216837e+22,HHF Scaling
+Rydberg (H),R_H,10967758.340000 m⁻¹,10967758.340259 m⁻¹,Spectral Validation

@@ -1,0 +1,22 @@
+{
+  "Daily_Minimum_Temperatures_Melbourne": {
+    "dataset_name": "Daily_Minimum_Temperatures_Melbourne",
+    "n_points": 3650,
+    "pfd": 1.024332464786391,
+    "hfd": 0.8710348624219364,
+    "mean_temp": 11.177753424657535,
+    "std_temp": 4.071279075310806,
+    "min_temp": 0.0,
+    "max_temp": 26.3,
+    "timestamp": "2025-12-01T12:25:01.583440",
+    "data_source": "https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv",
+    "k_max": 10
+  },
+  "metadata": {
+    "timestamp": "2025-12-01T12:25:01.583440",
+    "data_source": "https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv",
+    "computation_parameters": {
+      "k_max": 10
+    }
+  }
+}
